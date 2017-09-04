@@ -1,0 +1,21 @@
+create database PALM;
+use PALM;
+create table PDA(codigo int, nombre varchar(20),Sistema_operativo varchar(20), memoria decimal (6,2), bluetooth boolean, primary key (codigo));
+insert into PDA values(1,"Palm Tungsten TX","PalmOS", 128, 1);
+insert into PDA values(2,"Palm Zire 22","PalmOS", 16, 0);
+insert into PDA values(3,"Compaq Ipaq 3870","Windows 2002", 64, 1);
+select * from PDA;
+select * from PDA where memoria>64;
+select * from PDA where Sistema_operativo NOT LIKE "%PalmOS%";
+select * from PDA where Sistema_operativo LIKE "%Windows%";
+select distinct Sistema_operativo as SO from PDA;
+select nombre,codigo,MAX(memoria) as maxima_memoria from PDA;
+#Nombre y marca (supondremos que la marca es la primera palabra del nombre, hasta el primer espacio) de cada equipo, ordenado por marca y a continuación por nombre.
+select nombre, substring(nombre,1,(locate(' ',nombre)-1)) as marca from PDA order by substring(nombre,1,(locate(' ',nombre)-1)),nombre;
+select * from  PDA where  memoria < (select avg(memoria) from PDA);
+SELECT Sistema_operativo, COUNT(Sistema_operativo) as cantidad FROM PDA group by Sistema_operativo;
+alter table PDA add precio int;
+update PDA set precio=0;
+update PDA set precio=30 where Sistema_operativo="PalmOS";
+update PDA set precio=119 where codigo=2;
+select * from PDA;
