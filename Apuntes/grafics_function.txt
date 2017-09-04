@@ -1,0 +1,284 @@
+Math.easeOutBounce = function (pos) {
+				    if ((pos) < (1 / 2.75)) {
+				        return (7.5625 * pos * pos);
+				    }
+				    if (pos < (2 / 2.75)) {
+				        return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+				    }
+				    if (pos < (2.5 / 2.75)) {
+				        return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+				    }
+				    return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+};
+function generarModalGraficaSLA(categoria, nombre, f){
+	$.ajax({
+		url:'configs/includes/ajax/tabla_incidencia_modal.php',
+		data: ({categoria: categoria, tipo:nombre, f:f, fe: f}),
+		dataType:'JSON',
+		async:false,
+		success:function(data){
+			$("#categoria").html(data.titulo);
+			$("#referencia").html(data.tipo);
+			$("#detalle-tabla").html(data.contenido);
+			$("#category-name").val(data.hiden);
+			$("#data_send").val($("#maintain_date").val());
+			$("#btn_date_select").text($("#maintain_date").val());
+			$("#btn_date_range").text('Rango '+$("#reportrange").val());
+		},
+		error: function(xhr){
+			console.log(xhr);
+		}
+	});
+}
+
+function generarModalGraficaDetalle(categoria,nombre, f){
+	$.ajax({
+		url:'configs/includes/ajax/tabla_categoria_incidencias_modal.php',
+		data: ({categoria: categoria, tipo: nombre, f:f, fe: f}),
+		dataType:'JSON',
+		async:false,
+		success:function(data){
+			$("#categoria").html(data.titulo);
+			$("#referencia").html(data.tipo);
+			$("#detalle-tabla").html(data.contenido);
+			$("#category-name").val(data.hiden);
+			$("#data_send").val($("#maintain_date").val());
+			$("#btn_date_select").text($("#maintain_date").val());
+			$("#btn_date_range").text('Rango '+$("#reportrange").val());
+		}
+	});
+}
+
+function construirLinea(categoria, f, t){
+	var optionLinea ={
+		chart: {
+		   	renderTo: 'chart3',
+		    type: 'line',
+		    marginTop: 80,
+		    marginRight: 40,
+		},
+		title: {
+            text: 'Detalle Diario SLA',
+            x: -20 //center
+        },
+		credits:{enabled:false},
+        
+        xAxis: {
+            categories: []
+        },
+        yAxis: {
+            title: {
+                text: categoria
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function (e) {
+                            	$("#maintain_date").val(this.category);    
+                            	if(t==0){ 
+                    				generarModalGraficaSLA(categoria,this.series.name,this.category);
+                    			}else if(t==1){
+                    				generarModalGraficaDetalle(categoria,this.series.name,this.category);
+                    			}
+                    			$('#myModal').modal('show');
+                        	}
+                    	}
+                	},
+                marker: {
+                    lineWidth: 1
+                }
+            }
+        },
+        tooltip: {
+            valueSuffix: ' Detalle'
+        },
+        /*legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },*/
+        series: []
+	};
+	var url=[
+		'configs/includes/ajax/grafico_linea_incidencia.php',
+		'configs/includes/ajax/grafico_linea_detalle.php'
+	];
+	$.ajax({
+			url:url[t],
+			data: ({categoria: categoria, f:f}),
+			dataType:'JSON',
+			async:false,
+			success:function(data){
+				optionLinea.series=data.series;
+				optionLinea.xAxis.categories=data.categories;
+				chart1=new Highcharts.Chart(optionLinea);
+			},
+			error: function(xhr){
+				console.log(xhr);
+			}
+	});
+}
+
+function construirBarra(f){
+	var optionsBarra ={
+		    chart: {
+		       	renderTo: 'chart2',
+		        type: 'column',
+		        marginTop: 80,
+		        marginRight: 40
+		    },
+		    title: {
+		        text: 'Agrupación Incidencias Cumplidas y No Cumplidas'
+		    },
+			credits:{enabled:false},
+		    xAxis: {
+		        categories: []
+		    },
+		    yAxis: {
+		        allowDecimals: false,
+		        min: 0,
+		        title: {
+		            text: 'Detalle SLA'
+		        },
+		        stacklLabels: {
+		          	enabled: true
+		        },
+		        stackLabels: {
+		            enabled: true,
+		            style: {
+		                fontWeight: 'bold',
+		                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+		            }
+		        }
+		     },
+		    tooltip: {
+		        headerFormat: '<b>{point.key}</b><br>',
+		        pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} / {point.stackTotal}'
+		    },
+		    plotOptions: {
+		       	column: {
+		        stacking: 'normal',
+		        depth: 40
+		    },
+		    series: {
+		       	animation: {
+		            duration: 3000,
+		            easing: 'easeOutBounce'
+		        },
+		        point: {
+		           	events: {
+		           		click: function(){
+		           			var categoria = this.category;
+
+		           			construirLinea(categoria, f, 1);
+		           		}
+		           	}
+		        }
+		    },
+		    dataLabels: {
+		        enabled: false,
+		        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+		  		    style: {
+		            	textShadow: '0 0 3px black'
+		        	}
+		    	}
+			},
+		    series: []
+		}
+			$.ajax({
+				url:'configs/includes/data_incidencia.php',
+				data: ({action: 1, f:f}),
+				dataType:'JSON',
+				async:false,
+				success:function(data){
+					if(data.error.error==0){
+						optionsBarra.series=data.data.series;
+						optionsBarra.xAxis.categories=data.data.categories;
+				   		chart1=new Highcharts.Chart(optionsBarra);
+				   		$("#alert-user").addClass('hidden');
+					}else if(data.error.error==1){
+						$("#title-alert").html('<h4>Advertencia</h4>');
+						$("#body-alert").html('<div class="titulo text-right">'+data.error.mensaje+'</div>');
+						$("#alert-user").removeClass('hidden');
+					}
+				}
+			});
+}
+
+function construirTorta(f){
+	var optionTorta={
+			chart: {
+			  	renderTo: 'chart1',
+			    type: 'pie'
+			},
+			title: {
+			     text: 'Detalle SLA Cumplidos por Categoria'
+			},
+			tooltip: {
+			   	headerFormat: '<span style="font-size:12px; font-weight: bolder;">{series.name}</span><br>',
+			    pointFormat: '<span style="color:{point.color};font-weight: bolder">{point.name}</span>: <b>{point.percentage:.1f}%</b>'
+			},
+			credits:{enabled:false},
+			plotOptions: {
+			    pie: {
+			        allowPointSelect: true,
+			        cursor: 'pointer',
+			        depth: 35,
+			        dataLabels: {
+			            enabled: true,
+			            format: '{point.name}: {point.percentage:.1f}%'
+			            }
+			        },
+			series: {
+			    animation: {
+			        duration: 2000
+			    },
+			    point: {
+			   		events:{
+			   			click: function(event){
+				   				var name = this.name;
+				   				alert(name);
+				   				construirLinea(name,f, 0);
+			       			}
+			       		}
+			       	}
+			    }
+			},
+			series: [{
+			    type: 'pie',
+			    name: 'Categoria',
+			    data: []
+			}]
+	}
+
+	$.ajax({
+		url:'configs/includes/data_incidencia.php',
+		data: ({action: 3, f:f}),
+		dataType:'JSON',
+		async:false,
+		success:function(data){
+			console.log(data.error.error);
+			if(data.error.error==0){
+				optionTorta.series[0].data=data.data;
+		   		chart=new Highcharts.Chart(optionTorta);
+		   		$("#body-alert").addClass('hidden');
+		   	}else if(data.error.error==1){
+				$("#title-alert").html('<h4>Advertencia</h4>');
+				$("#body-alert").html('<div class="titulo text-right">'+data.error.mensaje+'</div>');
+				$("#body-alert").removeClass('hidden');
+				$("#chart1").empty();
+				$("#chart2").empty();
+				$("#chart3").empty();
+			}
+		}
+	});
+}

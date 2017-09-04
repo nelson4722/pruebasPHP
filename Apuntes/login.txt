@@ -1,0 +1,48 @@
+// JavaScript Document
+
+
+
+function pasuser(form) {
+	if (form.id.value=="providencia") { 
+		if (form.pass.value=="proadmin") {              
+			document.getElementById("log").style.display = "none";
+			} else {
+			document.getElementById("msj").innerHTML =  "Password Invalido";
+		}
+		
+		} else {  document.getElementById("msj").innerHTML =  "Usuario Invalido";
+	}
+}
+
+function salir() {
+	document.getElementById("log").style.display = "block";
+	document.getElementById("id").value =  "";
+	document.getElementById("pass").value =  "";
+}
+
+
+function ocultarpes(obj) {
+	if (obj==1){
+		/*alert('a')*/
+		
+		document.getElementById("conterA").style.display = "block";
+    	document.getElementById("conterB").style.display = "none"
+	
+	} else if (obj==2){
+		/*alert('B')*/
+		document.getElementById("conterA").style.display = "none";
+    	document.getElementById("conterB").style.display = "block";
+	
+	}
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  /*///////////////////////////////////////////////*/
+  
+  

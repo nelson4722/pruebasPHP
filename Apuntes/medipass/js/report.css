@@ -1,0 +1,298 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background:#666;
+}
+
+header div{
+	background:rgba(255,255,255,0.7);
+	/*height:65px;*/
+}
+
+.logo{
+	background:url(../img/logo.png) no-repeat, rgba(255,255,255,0.7);
+	background-size: auto 50px ;
+	background-position: 10px;	
+}
+
+
+.fondo{
+	background:rgba(0,0,0, 0.75);	
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin: auto;
+	z-index: 9;
+}
+
+.inicio{
+position:inherit;
+top:0;
+left:0;
+right:0;
+bottom:0;
+margin: auto;
+max-width:200px;
+max-height:250px;
+padding:10px;
+color:#666;
+background:rgba(255,255,255, 0.75);	
+font-size:14px;
+font-weight:bold;
+text-align:center;
+box-shadow: 0px 0px 30px black;
+overflow:hidden;
+-webkit-animation: alerta 1s;
+-moz-animation: alerta 1s;
+-animation: alerta 1s;
+opacity:1;
+}
+
+.logoini{
+	width:300px;
+	height:50px;
+	background:url(../img/logo.png) no-repeat center;
+	background-size: auto 50px ;
+	background-position: 4px;	
+}
+
+@-webkit-keyframes alerta{
+0%{opacity:0; top:10;}
+100%{opacity:1; top:0;}
+}
+
+@-moz-keyframes alerta{
+0%{opacity:0; }
+100%{opacity:1; }
+}
+
+@keyframes alerta{
+0%{opacity:0; }
+100%{opacity:1; }
+}
+
+.btn-blanck{
+	border-right:1px #666666 solid;
+	font-size:14px;
+	font-weight:normal;
+	padding:20px;
+	text-align:center;
+	overflow:hidden;
+}
+
+.lineaA, lineaB{
+	padding:50px;
+}
+
+.btn-b:hover{
+	background:rgba(255,255,255, 1);
+}
+
+.sin{
+	border-radius:0px;
+	padding:20px;
+	height:inherit;
+	background:rgba(255,255,255, 0.95);
+}
+
+.chart {
+	margin:10px;
+	
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #555;
+    background-color: #FFF;
+    background-image: none;
+    border: 1px solid #CCC;
+    border-radius: 0px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+
+.rojo{
+	background:linear-gradient( #F00, #C00);
+	color:#FFF;
+	text-shadow:none;
+	border-radius: 8px;
+	border-color: #666;
+	
+}
+
+.rojo:hover{
+	background:linear-gradient( #999, #666);
+	color:#FFF;
+	text-shadow:none;
+	border-radius: 8px;
+	border-color: #666;
+	
+}
+
+.derechos{
+	text-align:center;
+	color: #999;
+	font-size:9px;
+	padding:5px;
+	
+}
+.container {
+    width: 95%;
+}
+
+
+.modal-content {
+    position: relative;
+    background-color: #FFF;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0px;
+    outline: 0px none;
+    box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
+}
+
+
+
+.modal-header{
+	background:#999;
+	color:#FFF;
+	
+}
+
+.close{
+	color:#FFF;
+}
+
+
+
+
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+
+.dash{
+	cursor: move;
+}
+
+
+
+
+/*/////////////////////////////// CARPETAS///////////////////////////////////*/
+
+input[type="radio"] {
+    display:none;
+}
+input[type="radio"] + label span {
+    display:inline-block;
+	font-weight:normal;
+	font-size:13px;
+	padding:12px;
+	text-align:center;
+    cursor:pointer;
+	background:#999999;
+	color:#CCCCCC;
+	border-top-right-radius:5px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius:0px;
+	border-bottom-rigth-radius:0px;
+}
+input[type="radio"]:checked + label span {
+	background:rgba(255,255,255, 0.95);
+	color: #666;
+    
+}
+
+
+
+label {
+	margin-bottom: 0px;
+}
+
+.carpetas{
+margin-top:80px;	
+}
+
+
+/*TABLA*/
+
+.TITULOA{
+	background:#71a83b;
+	color:#FFF;
+}
+.TITULOB{
+	background:#611a62;
+	color:#FFF;
+}
+.TITULOC{
+	background:#4a72b1;
+	color:#FFF;
+}
+.TITULOD{
+	background:#eac16b;
+	color:#FFF;
+}
+.TITULOE{
+	background:#ba007c;
+	color:#FFF;
+}
+.TITULOF{
+	background:#cb6233;
+	color:#FFF;
+}
+.TITULOG{
+	background:#7d783f;
+	color:#FFF;
+}
+
+.par{
+	background:rgba(0,0,0, 0.1);
+}
+
+
+
+tr:hover, .par:hover{
+	background:#999;
+	color:#FFF;
+}
+
+#information .table > thead > tr > th, #information .table > tbody > tr > th, #information  .table > tfoot > tr > th, #information .table > thead > tr > td,  #information .table > tbody > tr > td, #information .table > tfoot > tr > td {
+	border:1px #999999 solid;
+	padding: 4px;
+	text-align:center;
+}
+
+.success-ok, .count-progress{
+	font-size:10px;	
+}
+
+.positivo{
+	background:#090;
+	color:#FFF;	
+}
+
+.negativo{
+	background:#C00;
+	color:#FFF;
+}
+
+.titulo{
+	font-size:25px;
+	color:#666;
+		
+}
